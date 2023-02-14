@@ -3,7 +3,6 @@
 using Delivery.Entity;
 using Delivery.Data;
 using Delivery.Repositories.Interfaces;
-using System.Threading;
 
 namespace Delivery.Repositories
 {
