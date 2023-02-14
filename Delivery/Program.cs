@@ -1,17 +1,23 @@
+using Microsoft.EntityFrameworkCore;
+
 using Delivery.Data;
 using Delivery.Entity;
-using Microsoft.EntityFrameworkCore;
+using Delivery.Repositories.Interfaces;
+using Delivery.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var connectionString = builder.Configuration.GetConnectionString("MyDbPgsql ");
 builder.Services.AddDbContext<DeliveryDbContext>(options =>
     options.UseNpgsql(connectionString));
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -23,8 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.MapPost("/Customer/", async (Customer e, DeliveryDbContext db) =>
+/*app.MapPost("/Customer/", async (Customer e, DeliveryDbContext db) =>
 {
     db.Customers.Add(e);
     await db.SaveChangesAsync();
@@ -75,7 +80,7 @@ app.MapDelete("/Customer/{id:int}", async (int id, DeliveryDbContext db) =>
         return Results.NoContent();
     
 }
-);
+);*/
 
 app.Run();
 

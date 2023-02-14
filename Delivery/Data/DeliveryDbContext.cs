@@ -1,16 +1,21 @@
-﻿using Delivery.Entity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Delivery.Entity;
+using Delivery.Data.Configurations;
 
 namespace Delivery.Data
 {
     public class DeliveryDbContext : DbContext
     {
-        public DeliveryDbContext(DbContextOptions<DeliveryDbContext>options) : base(options)
+        public DeliveryDbContext(DbContextOptions options) : base(options)
         {
 
         }
-
         public DbSet<Customer> Customers { get; set; }
-        public DbContextOptions<DeliveryDbContext> Options { get; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            ModelBuilder modelBuilder1 = modelBuilder.ApplyConfiguration(new CustomerConfigurations());
+        }
     }
 }
