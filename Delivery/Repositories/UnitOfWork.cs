@@ -15,7 +15,7 @@ namespace Delivery.Repositories
             _dbcontext = dbcontext;
         }
 
-        public void SaveChangesAsync()
+        public void SaveChangesAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

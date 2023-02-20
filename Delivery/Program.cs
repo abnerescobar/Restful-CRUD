@@ -4,7 +4,7 @@ using Delivery.Data;
 using Delivery.Entity;
 using Delivery.Repositories.Interfaces;
 using Delivery.Repositories;
-
+using Delivery.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,9 +27,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAll");
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
 

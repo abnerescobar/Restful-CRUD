@@ -1,4 +1,5 @@
-﻿using Delivery.Repositories.Interfaces;
+﻿using Delivery.Exceptions;
+using Delivery.Repositories.Interfaces;
 
 namespace Delivery.Entity
 {
@@ -12,12 +13,19 @@ namespace Delivery.Entity
         Address= address;
          Status = true;
         }
+
+        public Customer()
+        {
+
+        }
         public int Id { get; set; }
         public string? Name { get; private set; }
         public string? PhoneNumber { get; private set; }
         public string? Email { get; private set; }
         public string? Address { get; private set; }
         public bool Status { get; private set; }
+        public decimal LoanLimit { get; private set; }
+        public int NumberBookLoans { get; private set; }
         public DateTime CreatedOnUtc { get; set; }
 
         public DateTime? ModifiedOnUtc { get; set; }
@@ -28,6 +36,26 @@ namespace Delivery.Entity
             {
                  Name= name;
             }
+        }
+
+        public void IncrementCreditLimit(decimal credit)
+        {
+            if(credit> 3000)
+            {
+                throw new CreditLimitException(Name);
+            }
+            LoanLimit = credit;
+
+        }
+
+        public void IncrementBookLoan(int loan)
+        {
+            if (loan > 4)
+            {
+                throw new NumberBooksLoanException(Name);
+            }
+            LoanLimit = loan;
+
         }
         public void ChangePhoneNumber(string phoneNumber)
         {
