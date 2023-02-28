@@ -13,9 +13,12 @@ var connectionString = builder.Configuration.GetConnectionString("MyDbPgsql ");
 builder.Services.AddDbContext<DeliveryDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.Decorate<ICustomerRepository, CachedCustomerRepository>();
+builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
